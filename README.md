@@ -1,5 +1,9 @@
 ## tp-go-proxy
+<<<<<<< HEAD
 go | jackc/pgx | openssl*
+=======
+go | jacks/pgx | openssl*
+>>>>>>> 73cb003b9ed2af59a8eeaab6ef81dae9c964346b
 
 Proxy сохраняет запросы в локальной postgres базе днных.
 Сертификаты генерируюся на лету с помощью openssl.
@@ -29,6 +33,7 @@ docker run -p 5000:5000 --name gel0 -t gel0;
 
 **Для запуска repeater'a:**
 
+<<<<<<< HEAD
 ```
 cd ./repeater
 go run main.go
@@ -37,10 +42,24 @@ go run main.go
 `go run main.go -r`
 После выполения команды в консоль выведится список всех сохраненных запросов из базы, каждому из запросов соответствует уникальный Id. Чтобы осуществить повторную отправку запроса с id *x*, необходимо выполнить запуск репитера с флагом -i *x*, пример:
 ```go run main.go -i 7```
+=======
+`
+	cd ./repeater
+	go run main.go
+`
+Чтобы получить список всех сохраненных запросов (все, что лежит в базе) необходимо выполнить запуск репитера с флагом -r:
+`go run main.go -r`
+После выполения команды в консоль выведится список всех сохраненных запросов из базы, каждому из запросов соответствует уникальный Id. Чтобы осуществить повторную отправку запроса с id *x*, необходимо выполнить запуск репитера с флагом -i *x*, пример:
+`go run main.go -i 7`
+>>>>>>> 73cb003b9ed2af59a8eeaab6ef81dae9c964346b
 
 *При каждом новом билде докера таблицы базы данных proxy отчищаются.*
 
 #### Как пользоваться:
 
 **Firefox:**
+<<<<<<< HEAD
 *Settings->Proxy->Manual proxy configuration->Set `localhost:8080` -> Use this proxy server for all protocols*
+=======
+*Settings->Proxy->Manual proxy configuration->Set `localhost:8080` -> Use this proxy server for all protocols*
+>>>>>>> 73cb003b9ed2af59a8eeaab6ef81dae9c964346b
