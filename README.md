@@ -9,7 +9,7 @@ Proxy сохраняет запросы в локальной postgres базе 
 - Проксировать HTTPS запросы: соединение с прокси устанавлявается с помощью метода CONNECT;
 - Отправлять сохраненные (в базе) запросы как *burp repeater*;
 
-#### Как пользоваться:
+#### Как запустить:
 **Для запуска прокси сервера (хэндлит HTTP и HTTPS):**
 
 ```
@@ -39,3 +39,8 @@ docker run -p 5000:5000 --name gel0 -t gel0;
 `go run main.go -i 7`
 
 *При каждом новом билде докера таблицы базы данных proxy отчищаются.*
+
+#### Как пользоваться:
+
+**Firefox:**
+*Settings->Proxy->Manual proxy configuration->Set `localhost:8080` -> Use this proxy server for all protocols*
