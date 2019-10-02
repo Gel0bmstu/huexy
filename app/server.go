@@ -27,40 +27,6 @@ func copyHeaders(r *http.Response, w http.ResponseWriter) {
 	}
 }
 
-// func handleHTTP(w http.ResponseWriter, r *http.Request) {
-
-// 	uri := r.RequestURI
-
-// 	fmt.Println(r.Method + ": " + uri)
-
-// 	if r.Method == "POST" {
-// 		body, err := ioutil.ReadAll(r.Body)
-// 		log.Fatal(err)
-// 		fmt.Printf("Body: %v\n", string(body))
-// 	}
-
-// 	rr, err := http.NewRequest(r.Method, uri, r.Body)
-// 	log.Fatal(err)
-// 	// copyHeaders(r, rr)
-
-// 	// Create a client and query the target
-// 	var transport http.Transport
-// 	resp, err := transport.RoundTrip(rr)
-// 	log.Fatal(err)
-
-// 	fmt.Printf("Resp-Headers: %v\n", resp.Header)
-
-// 	defer resp.Body.Close()
-// 	body, err := ioutil.ReadAll(resp.Body)
-// 	log.Fatal(err)
-
-// 	dH := w.Header()
-// 	copyHeaders(resp, w)
-// 	dH.Add("Requested-Host", rr.Host)
-
-// 	w.Write(body)
-// }
-
 func handleHTTP(w http.ResponseWriter, r *http.Request) {
 	transport := http.Transport{
 		ResponseHeaderTimeout: 15 * time.Second,
@@ -123,36 +89,32 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (s *Server) Run() {
-
-	fmt.Println("step 1")
-
-	var err error
+func Run() {
+	var (
+		err  error
+		conn *pgx.Conn
+	)
 
 	// Connect to DB
-	s.DB, err = InitDatabase()
-
-	fmt.Println("step 2")
+	conn, err = InitDatabase()
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Generate root CA keys
-	// CA, _ := getKey()
-
-	fmt.Println("4")
+	CA, _ := getKey()
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	serv := &Server{
-		DB: s.DB,
-		// CA: &CA,
+		DB: conn,
+		CA: &CA,
 	}
 
-	fmt.Println("5")
+	fmt.Println("Sever start. Listen and Serve on localhost:8080")
 
 	log.Fatal(http.ListenAndServe(":8080", serv))
 }

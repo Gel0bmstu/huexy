@@ -8,7 +8,6 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
-	"fmt"
 	"io/ioutil"
 	"math/big"
 	"time"
@@ -47,14 +46,15 @@ func createCerts() (result, resultKey []byte) {
 		NotAfter:              currentTime.Add(notAfterTime),
 		KeyUsage:              rootUsage,
 		BasicConstraintsValid: true,
-		IsCA:                  true, // Is CA or not (in this case true)
+		IsCA:                  true,
 		MaxPathLen:            2,
 		SignatureAlgorithm:    x509.ECDSAWithSHA512,
 	}
 
 	key, _ := ecdsa.GenerateKey(elliptic.P521(), rand.Reader)
 
-	rawResult, _ := x509.CreateCertificate( // Create certificate using key and template
+	// Create a raw version of cert
+	rawResult, _ := x509.CreateCertificate(
 		rand.Reader,
 		&cert,
 		&cert,
@@ -62,8 +62,10 @@ func createCerts() (result, resultKey []byte) {
 		key,
 	)
 
+	// Create a raw version of key
 	rawKey, _ := x509.MarshalECPrivateKey(key)
 
+	// Enode into []byte
 	result = pem.EncodeToMemory(&pem.Block{
 		Type:  "CERTIFICATE",
 		Bytes: rawResult,
@@ -79,11 +81,7 @@ func createCerts() (result, resultKey []byte) {
 
 func getKey() (key tls.Certificate, err error) {
 
-	fmt.Println("da")
-
 	certRaw, keyRaw := createCerts()
-
-	fmt.Println("da")
 
 	key, _ = tls.X509KeyPair(certRaw, keyRaw)
 
@@ -91,8 +89,6 @@ func getKey() (key tls.Certificate, err error) {
 	ioutil.WriteFile("key.pem", keyRaw, 0400)
 
 	key.Leaf, err = x509.ParseCertificate(key.Certificate[0])
-
-	fmt.Println("da")
 
 	return
 }

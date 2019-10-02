@@ -5,7 +5,5 @@ import (
 )
 
 func main() {
-	s := &app.Server{}
-
-	s.Run()
+	app.Run()
 }
